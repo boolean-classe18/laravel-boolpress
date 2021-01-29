@@ -99,7 +99,8 @@ class PostController extends Controller
 
         $data = [
             'post' => $post,
-            'categories' => Category::all()
+            'categories' => Category::all(),
+            'tags' => Tag::all()
         ];
 
         return view('admin.posts.edit', $data);
@@ -136,6 +137,7 @@ class PostController extends Controller
             $form_data['slug'] = $slug;
         }
         $post->update($form_data);
+        $post->tags()->sync($form_data['tags']);
         return redirect()->route('admin.posts.index');
     }
 
