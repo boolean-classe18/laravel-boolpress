@@ -5,6 +5,9 @@
         <div class="row">
             <div class="col-12">
                 <h1>{{ $post->title }}</h1>
+                @if($post->cover)
+                    <img src="{{ asset('storage/' . $post->cover) }}" alt="{{ $post->title }}">
+                @endif
                 <div>
                     {{ $post->content }}
                 </div>

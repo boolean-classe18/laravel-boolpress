@@ -15,6 +15,14 @@
                 <dd>{{ $post->title }}</dd>
                 <dt>Slug</dt>
                 <dd>{{ $post->slug }}</dd>
+                <dt>Immagine di copertina:</dt>
+                <dd>
+                    @if($post->cover)
+                        <img src="{{ asset('storage/' . $post->cover) }}" alt="{{ $post->title }}">
+                    @else
+                        <p>copertina non presente</p>
+                    @endif
+                </dd>
                 <dt>Contenuto</dt>
                 <dd>{{ $post->content }}</dd>
                 <dt>Categoria</dt>
