@@ -21,26 +21,39 @@
                     </div>
                 @endif
             </div>
-            <form action="{{ route('admin.posts.update', ['post' => $post->id]) }}" method="post">
+            <form action="{{ route('admin.posts.update', ['post' => $post->id]) }}" method="post" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="form-group">
                     <label>Titolo</label>
-                    <input type="text" name="title" class="form-control" placeholder="Inserisci il titolo" value="{{ old('title', $post->title) }}" required>
+                    <input type="text" name="title" class="form-control @error('title') is-invalid @enderror" placeholder="Inserisci il titolo" value="{{ old('title', $post->title) }}" required>
                     @error('title')
-                        <div class="alert alert-danger">{{ $message }}</div>
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="form-group">
+                    @if($post->cover)
+                        <p>Immagine di copertina presente:</p>
+                        <img class="d-block" src="{{ asset('storage/' . $post->cover) }}">
+                    @else
+                        <p>Immagine di copertina non post presente</p>
+                    @endif
+                    <label>Carica una nuova immagine di copertina</label>
+                    <input type="file" class="form-control-file @error('image') is-invalid @enderror" name="image">
+                    @error('image')
+                        <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
                 <div class="form-group">
                     <label>Contenuto</label>
-                    <textarea name="content" class="form-control" rows="10" placeholder="Inizia a scrivere qualcosa..." required>{{ old('content', $post->content) }}</textarea>
+                    <textarea name="content" class="form-control @error('content') is-invalid @enderror" rows="10" placeholder="Inizia a scrivere qualcosa..." required>{{ old('content', $post->content) }}</textarea>
                     @error('content')
-                        <div class="alert alert-danger">{{ $message }}</div>
+                        <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
                 <div class="form-group">
                     <label>Categoria</label>
-                    <select class="form-control" name="category_id">
+                    <select class="form-control  @error('category_id') is-invalid @enderror" name="category_id">
                         <option value="">-- seleziona categoria --</option>
                         @foreach ($categories as $category)
                             <option value="{{ $category->id }}"
@@ -50,13 +63,13 @@
                         @endforeach
                     </select>
                     @error('category_id')
-                        <div class="alert alert-danger">{{ $message }}</div>
+                        <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
                 <div class="form-group">
                     <p>Seleziona i tag:</p>
                     @foreach ($tags as $tag)
-                        <div class="form-check">
+                        <div class="form-check @error('tags') is-invalid @enderror">
                             @if($errors->any())
                                 <input name="tags[]" class="form-check-input" type="checkbox" value="{{ $tag->id }}"
                                 {{ in_array($tag->id, old('tags', [])) ? 'checked=checked' : '' }}>
@@ -70,7 +83,7 @@
                         </div>
                     @endforeach
                     @error('tags')
-                        <div class="alert alert-danger">{{ $message }}</div>
+                        <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
                 <div class="form-group">

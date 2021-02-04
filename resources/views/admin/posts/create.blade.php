@@ -36,7 +36,7 @@
                     @error('image')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
-                  </div>
+                </div>
                 <div class="form-group">
                     <label>Contenuto</label>
                     <textarea name="content" class="form-control @error('content') is-invalid @enderror" rows="10" placeholder="Inizia a scrivere qualcosa..." required>{{ old('content') }}</textarea>
